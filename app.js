@@ -20,9 +20,8 @@ async function handleYes() {
       xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
       xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
       <wsse:UsernameToken wsu:Id="1cd4ed7e-8b46-429b-be03-d5c182248a10">
-        <wsse:Username>obixone</wsse:Username>
-        <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">
-ob1xon#</wsse:Password>
+        <wsse:Username>mobixone</wsse:Username>
+        <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">ob1xon#</wsse:Password>
         <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">AA==</wsse:Nonce>
         <wsu:Created>${createdTime}</wsu:Created>
       </wsse:UsernameToken>

@@ -9,40 +9,42 @@ async function handleYes() {
 
   const soapEndpoint = "/api/soap"; // ✅ IMPORTANT
 
-  const createdTime = new Date().toISOString();
+  const created = new Date().toISOString();
+	const nonce = btoa("random123"); // simple base64
 
-  const soapBody = `
-  <?xml version="1.0" encoding="utf-8"?>
-<soapenv:Envelope xmlns:wasp="http://wasp.doi.soap.protocol.cellc.co.za"
-                  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-  <soapenv:Header>
-    <wsse:Security soapenv:mustUnderstand="1"
-      xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
-      xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-      <wsse:UsernameToken wsu:Id="1cd4ed7e-8b46-429b-be03-d5c182248a10">
-        <wsse:Username>mobixone</wsse:Username>
-        <wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">ob1xon#</wsse:Password>
-        <wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">AA==</wsse:Nonce>
-        <wsu:Created>${createdTime}</wsu:Created>
-      </wsse:UsernameToken>
-    </wsse:Security>
-  </soapenv:Header>
+	const soapBody = `<?xml version="1.0" encoding="utf-8"?>
+	<soapenv:Envelope xmlns:wasp="http://wasp.doi.soap.protocol.cellc.co.za"
+					  xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+	  <soapenv:Header>
+		<wsse:Security soapenv:mustUnderstand="1"
+		  xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+		  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
 
-  <soapenv:Body>
-    <wasp:addSubscription>
-      <msisdn>27791174715</msisdn>
-      <serviceName>MOBIXONE PENTHOUSETV</serviceName>
-      <contentProvider>MOBIXONE</contentProvider>
-      <chargeCode>MOBIXONE0050</chargeCode>
-      <chargeInterval>DAYEVENTx5</chargeInterval>
-      <contentType>OTHER</contentType>
-      <bearerType>WEB</bearerType>
-      <waspReference>${crypto.randomUUID()}</waspReference>
-      <waspTID>${crypto.randomUUID()}</waspTID>
-    </wasp:addSubscription>
-  </soapenv:Body>
-</soapenv:Envelope>
-  `;
+		  <wsse:UsernameToken wsu:Id="` + crypto.randomUUID() + `">
+			<wsse:Username>mobixone</wsse:Username>
+			<wsse:Password Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">ob1xon#</wsse:Password>
+			<wsse:Nonce EncodingType="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary">${nonce}</wsse:Nonce>
+			<wsu:Created>${created}</wsu:Created>
+		  </wsse:UsernameToken>
+
+		</wsse:Security>
+	  </soapenv:Header>
+
+	  <soapenv:Body>
+		<wasp:addSubscription>
+		  <wasp:msisdn>27791174715</wasp:msisdn>
+		  <wasp:serviceName>MOBIXONE PENTHOUSETV</wasp:serviceName>
+		  <wasp:contentProvider>MOBIXONE</wasp:contentProvider>
+		  <wasp:chargeCode>MOBIXONE0050</wasp:chargeCode>
+		  <wasp:chargeInterval>DAYEVENTx5</wasp:chargeInterval>
+		  <wasp:contentType>OTHER</wasp:contentType>
+		  <wasp:bearerType>WEB</wasp:bearerType>
+		  <wasp:waspReference>${crypto.randomUUID()}</wasp:waspReference>
+		  <wasp:waspTID>${crypto.randomUUID()}</wasp:waspTID>
+		</wasp:addSubscription>
+	  </soapenv:Body>
+	</soapenv:Envelope>`;
+	  `;
 
   try {
     const res = await fetch(soapEndpoint, {
